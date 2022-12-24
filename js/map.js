@@ -3,8 +3,7 @@ import * as d3 from "https://cdn.skypack.dev/d3@7";
 // topojson = require("topojson-client@3");
 // import * as topojson from "https://unpkg.com/topojson@3";
 const div_map = d3.select("#usa-map");
-
-// var topology = topojson.topology();
+// 地图表格
 function Choropleth(data, {
     id = d => d.id, // given d in data, returns the feature id
     value = () => undefined, // given d in data, returns the quantitative value
@@ -99,19 +98,6 @@ function Choropleth(data, {
 
     return Object.assign(svg.node(), { scales: { color } });
 }
-// chart = Choropleth(unemployment, {
-//     id: d => d.id,
-//     value: d => d.rate,
-//     scale: d3.scaleQuantize,
-//     domain: [1, 10],
-//     range: d3.schemeBlues[9],
-//     title: (f, d) => `${f.properties.name}, ${statemap.get(f.id.slice(0, 2)).properties.name}\n${d?.rate}%`,
-//     features: counties,
-//     borders: statemesh,
-//     width: 975,
-//     height: 610
-// })
-
 
 const getSpecDateData = (data, date) => {
     return data.filter(d => d.date === date);
@@ -119,20 +105,24 @@ const getSpecDateData = (data, date) => {
 const removeNoIdData = (data) => {
     return data.filter(d => d.id !== "");
 };
-var us;
+
+// 获取美国地图
+var us;// 美国地图数据
 await fetch('./assets/json/counties-albers-10m.json')
     .then((response) => response.json())
     .then((data) => {
         us = data;
         console.log(us.objects);
     });
-console.log(us.objects);
 const counties = topojson.feature(us, us.objects.counties);
 const states = topojson.feature(us, us.objects.states);
 const statemap = new Map(states.features.map(d => [d.id, d]));
 const statemesh = topojson.mesh(us, us.objects.states, (a, b) => a !== b);
 
-d3.csv("./assets/data/us-counties-recent.csv").then(function (data) {
+
+// 读取新冠数据
+var dataset;
+await d3.csv("./assets/data/us-counties-recent.csv").then(function (data) {
     console.log(data);
     // turn to Array
     data = data.map(d => {
@@ -145,8 +135,47 @@ d3.csv("./assets/data/us-counties-recent.csv").then(function (data) {
             deaths: +d.deaths
         };
     });
-    // 统计哪些fips没有数据或者有重复数据
-    let specdata = getSpecDateData(data, "2022-12-21");
+    dataset = data;
+
+    // 获取起始日期
+    let startdate = d3.min(data, d => d.date);
+    let enddate = d3.max(data, d => d.date);
+    const available_date_from = document.getElementById("available_date_from");
+    const available_date_to = document.getElementById("available_date_to");
+    // 更新日期范围
+    available_date_from.innerHTML = startdate;
+    available_date_to.innerHTML = enddate;
+    // 绘制地图
+    let specdata = getSpecDateData(data, startdate);
+    specdata = removeNoIdData(specdata);
+    specdata = specdata.map(d => {
+        return {
+            id: d.id,
+            state: d.state,
+            county: d.county,
+            rate: (d.deaths / d.cases) * 300
+        }
+    })
+    const usa_map = Choropleth(specdata, {
+        id: d => d.id,
+        value: d => d.rate,
+        scale: d3.scaleQuantize,
+        domain: [1, 10],
+        range: d3.schemeBlues[9],
+        title: (f, d) => `${f.properties.name}, ${statemap.get(f.id.slice(0, 2)).properties.name}\n${d?.rate}%`,
+        features: counties,
+        borders: statemesh,
+        width: 975,
+        height: 610
+    });
+    div_map.append(() => usa_map);
+});
+
+// 根据html里的date信息更新地图
+function update() {
+    const date = document.getElementById("date").value;
+    console.log(date);
+    let specdata = getSpecDateData(dataset, date);
     specdata = removeNoIdData(specdata);
     specdata = specdata.map(d => {
         return {
@@ -170,6 +199,11 @@ d3.csv("./assets/data/us-counties-recent.csv").then(function (data) {
         width: 975,
         height: 610
     });
+    // clear div_map and append new map
+    div_map.selectAll("*").remove();
     div_map.append(() => usa_map);
+}
 
-});
+// 按钮update：更新地图
+const update_button = document.getElementById("update");
+update_button.onclick = update;

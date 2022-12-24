@@ -15,12 +15,24 @@
     <script type="module" src="js/example.js"></script> -->
     <!-- 上面是一个仿照github-commit记录的一个可视化的例子，
         我们的程序到时候就类似这种方式嵌入到同一个index.html中 -->
-
-
     <!-- 比如像下面这样：
     <div id="usa-chart"> </div>
     <script type="module" src="js/chart.js"></script> -->
-    <div id="container">
+
+
+    <!-- date input -->
+    <div id="date_container">
+        Available time:<br>
+        From:<strong id="available_date_from">2020-01-22</strong><br>
+        To:<strong id="available_date_to">2020-01-23</strong><br>
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" value="2022-12-21">
+    </div>
+    <input type="button" id="update" value="update!">
+
+
+    <!-- USA Covid-19 Map -->
+    <div id="map_container">
         <script src="https://unpkg.com/topojson@3"></script>
         <div id="usa-map"> </div>
         <script type="module" src="js/map.js"></script>

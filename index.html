@@ -3,25 +3,29 @@
 
 <head>
     <title>SC</title>
+    <meta charset="utf-8">
+    <!-- css -->
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/map.css">
 </head>
 
 <body>
-
-
-    <div id="calendar"> </div>
-    <script type="module" src="js/example.js"></script>
+    <div id="p">USA Covid-19 Map</div>
+    <!-- <div id="calendar"> </div>
+    <script type="module" src="js/example.js"></script> -->
     <!-- 上面是一个仿照github-commit记录的一个可视化的例子，
         我们的程序到时候就类似这种方式嵌入到同一个index.html中 -->
 
-    <!-- 
-        比如像下面这样：
+
+    <!-- 比如像下面这样：
     <div id="usa-chart"> </div>
-    <script type="module" src="js/chart.js"></script>
+    <script type="module" src="js/chart.js"></script> -->
+    <div id="container">
+        <script src="https://unpkg.com/topojson@3"></script>
+        <div id="usa-map"> </div>
+        <script type="module" src="js/map.js"></script>
+    </div>
 
-
-    <div id="usa-map"> </div>
-    <script type="module" src="js/map.js"></script> 
-    -->
 
 
 </body>

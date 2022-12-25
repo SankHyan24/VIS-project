@@ -108,7 +108,8 @@ const removeNoIdData = (data) => {
 
 // 获取美国地图
 var us;// 美国地图数据
-await fetch('https://cdn.jsdelivr.net/npm/us-atlas@1/us/10m.json')
+// await fetch('https://cdn.jsdelivr.net/npm/us-atlas@1/us/10m.json')
+await fetch("./assets/json/counties-albers-10m.json")
     .then((response) => response.json())
     .then((data) => {
         us = data;

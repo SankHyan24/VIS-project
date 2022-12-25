@@ -1,5 +1,6 @@
 'use strict';
 import * as d3 from "https://cdn.skypack.dev/d3@7";
+import { update_chart } from "./chart.js"
 // topojson = require("topojson-client@3");
 // import * as topojson from "https://unpkg.com/topojson@3";
 const div_map = d3.select("#usa-map");
@@ -203,6 +204,7 @@ function update() {
     // clear div_map and append new map
     div_map.selectAll("*").remove();
     div_map.append(() => usa_map);
+    update_chart();
 }
 
 

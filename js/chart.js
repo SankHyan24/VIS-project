@@ -74,7 +74,7 @@ function drawline(enddate)
 
 drawline("2022-12-21");
 
-function update() {
+function update_chart() {
     const date = document.getElementById("date").value;
     div_chart.selectAll("svg").remove();
     drawline(date);

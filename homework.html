@@ -51,7 +51,7 @@
             .append("g")
             .attr("transform","translate("+ margin.left + "," + margin.right +")");
 
-d3.csv("us-states.csv").then(function(data)
+d3.csv("./assets/data/us-states.csv").then(function(data)
 {
     let newdata = data.filter(d => d.state == 'Washington');
     newdata = newdata.filter(d => d.date <= '2020-08-21' && d.date >= '2020-06-21');
@@ -89,15 +89,6 @@ d3.csv("us-states.csv").then(function(data)
     //     .attr("class","line2")
     //     .attr("d",line2);
 
-    // var trans = function(item,i)
-    // {
-    //     if(i%2===0)
-    //     {
-    //         return '.75em';
-    //     }
-    //     else
-    //     return '1.75em';
-    // }
     svg.append("g")
         .attr("class","x axis")
         .attr("transform","translate(0," + height + ")")
@@ -144,70 +135,5 @@ d3.csv("us-states.csv").then(function(data)
     //     .attr("stroke","black")
     //     .text("Total Deaths");
 });
-// d3.csv("data.csv").then(function(data)
-// {
-//     scale_x.domain(data.map((d) => d.year));
-//     scale_y.domain([0,d3.max(data,d => d.value)]);
-
-//     xScale.domain(d3.extent(data,d=>d.year));
-//     yScale.domain(d3.extent(data,d=>d.value));
-    
-//     line.x(function(d) { return xScale(d.year);})
-//         .y(function(d) { return yScale(d.value);});
-//     //console.log(line);
-//     // g.append("g")
-//     //     .attr("transform","translate(0,"+ height +")")
-//     //     .call(d3.axisBottom(scale_x))
-//     //     .append("text")
-//     //     .attr("y",height - 250)
-//     //     .attr("x",width - 100)
-//     //     .attr("text-anchor","end")
-//     //     .attr("stroke","black")
-//     //     .text(" 年份");
-//     // g.append("g")
-//     //     .call(d3
-//     //             .axisLeft(scale_y)
-//     //             .tickFormat(function (d){return d;})
-//     //             .ticks(10)
-//     //         )
-//     //     .append("text")
-//     //     .attr("transform","rotate(-90)")
-//     //     .attr("y",6)
-//     //     .attr("dy","-5.1em")
-//     //     .attr("text-anchor","end")
-//     //     .attr("stroke","black")
-//     //     .text(" 股价");
-//     // g.selectAll(".bar")
-//     //     .data(data)
-//     //     .enter()
-//     //     .append("rect")
-//     //     .attr("class","bar")
-//     //     .attr("x",function(d){return scale_x(d.year);})
-//     //     .attr("y",function(d){return scale_y(d.value);})
-//     //     .attr("width",scale_x.bandwidth())
-//     //     .attr("height",function(d){return height - scale_y(d.value);})
-//     //     .attr("fill",'grey');
-
-//     svg
-//         /*.append("text")
-//         .attr("transform","translate(100,0)")
-//         .attr("x",50)
-//         .attr("y",50)
-//         .attr("font-size","24px")
-//         .text("X公司股票价格")*/
-//         .append("path")
-//         .datum(data)
-//         .attr("class","line")
-//         .attr("d",line);
-
-//     svg.append("g")
-//         .attr("class","x axis")
-//         .attr("transform","translate(0," + height + ")")
-//         .call(d3.axisBottom(xScale));
-
-//     svg.append("g")
-//         .attr("class","y axis")
-//         .call(d3.axisLeft(yScale));
-// });
     
 </script>

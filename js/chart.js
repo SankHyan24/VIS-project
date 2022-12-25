@@ -7,12 +7,6 @@ var margin = { top: 50, right: 50, bottom: 100, left: 100 },
     width = 750 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
-var svg = div_chart.append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.bottom + margin.top)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.right + ")");
-
 function drawline(enddate) {
     d3.csv("./assets/data/us-states.csv").then(function (data) {
         let newdata = data.filter(d => d.state == 'Washington');
@@ -21,7 +15,11 @@ function drawline(enddate) {
         var xScale = d3.scalePoint()
             .domain(newdata.map(d => d.date))
             .range([0, width]);
-
+        var svg = div_chart.append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.bottom + margin.top)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.right + ")");
         var yScale = d3.scaleLinear()
             .domain(d3.extent(newdata, d => d.cases_avg_per_100k))
             .range([height, 0]);
@@ -74,7 +72,7 @@ drawline("2022-12-21");
 
 export function update_chart() {
     const date = document.getElementById("date").value;
-    div_chart.selectAll("svg").remove();
+    div_chart.selectAll("*").remove();
     drawline(date);
 }
 

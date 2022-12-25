@@ -7,7 +7,7 @@ var margin = {top:50,right:50,bottom:100,left:100},
     width = 750 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
-var svg = d3.select("div_chart").append("svg")
+var svg = div_chart.append("svg")
     .attr("width",width + margin.left + margin.right)
     .attr("height",height + margin.bottom + margin.top)
     .append("g")
@@ -73,29 +73,13 @@ function drawline(enddate)
 }
 
 drawline("2022-12-21");
-//div_chart.append(() => usa_chart_initial);
 
 function update() {
     const date = document.getElementById("date").value;
-    // console.log(date);
-    // let specdata = getSpecDateData(dataset, date);
-    // specdata = removeNoIdData(specdata);
-    // specdata = specdata.map(d => {
-    //     return {
-    //         id: d.id,
-    //         state: d.state,
-    //         county: d.county,
-    //         rate: (d.deaths / d.cases) * 300
-    //     }
-    // })
-    // console.log(specdata);
-    // 绘制地图
-    //const usa_chart = drawline("2022-12-20");
-    // clear div_map and append new map
-    //body.selectAll("svg").remove();
-    //d3.append(() => usa_chart);
+    div_chart.selectAll("svg").remove();
+    drawline(date);
 }
 
 // 按钮update：更新地图
-const update_button = document.getElementById("update");
-update_button.onclick = update;
+const update_button_chart = document.getElementById("update");
+update_button_chart.onclick = update_chart;

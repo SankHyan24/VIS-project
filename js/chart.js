@@ -14,7 +14,7 @@ function drawline(enddate)
         .append("g")
         .attr("transform","translate("+ margin.left + "," + margin.right +")");
 
-    d3.csv("us-states.csv").then(function(data)
+    d3.csv("./assets/data/us-states.csv").then(function(data)
     {
         // let startdate = d3.min(data, d => d.date);
         // let enddate = d3.max(data, d => d.date);
@@ -119,12 +119,12 @@ function drawline(enddate)
         //     .text("Total Deaths");
     });
 
-    return Object.assign(svg.node(),{ scales: { color } });
+    return Object.assign(svg.node(),{ scales: { color } });//这里不对，只是权宜之计
 }
 
 var usa_chart_initial = drawline(2022);
 // clear div_map and append new map
-div_chart.append(() => usa_chart_initial);
+div_chart.append(() => usa_chart_initial);//用来测试能否画图，值得注意的是如果把这里去掉，改在update函数里使用，似乎不会把原图清除而是会多画一张图
 
 function update() {
     //const date = document.getElementById("date").value;
@@ -140,13 +140,12 @@ function update() {
     //     }
     // })
     // console.log(specdata);
-    // 绘制地图
     //const usa_chart = drawline(2020);
     // clear div_map and append new map
     div_chart.selectAll("*").remove();
     //div_chart.append(() => usa_chart);
 }
 
-// 按钮update：更新地图
+// 按钮update：更新
 const update_button = document.getElementById("update");
 update_button.onclick = update;

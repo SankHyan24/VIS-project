@@ -15,7 +15,7 @@ var svg = d3.select("div_chart").append("svg")
 
 function drawline(enddate)
 {
-    d3.csv("us-states.csv").then(function(data)
+    d3.csv("./assest/data/us-states.csv").then(function(data)
     {
         let newdata = data.filter(d => d.state == 'Washington');
         newdata = newdata.filter(d => d.date <= enddate && d.date >= '2020-01-21');

@@ -7,10 +7,10 @@ var margin = { top: 50, right: 50, bottom: 100, left: 100 },
     width = 750 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
-function drawline(enddate) {
+function drawline(startdate,enddate) {
     d3.csv("./assets/data/us-states.csv").then(function (data) {
         let newdata = data.filter(d => d.state == 'Washington');
-        newdata = newdata.filter(d => d.date <= enddate && d.date >= '2020-01-21');
+        newdata = newdata.filter(d => d.date <= enddate && d.date >= startdate);
         newdata.forEach(d => { d.cases_avg_per_100k = +d.cases_avg_per_100k; d.deaths_avg_per_100k = +d.deaths_avg_per_100k; });
         var xScale = d3.scalePoint()
             .domain(newdata.map(d => d.date))
@@ -35,8 +35,8 @@ function drawline(enddate) {
             .attr("class", "line")
             .attr("d", line)
             .attr("fill", "none")
-            .attr("stroke", "#ffab00")
-            .attr("stroke-width", "3px");
+            .attr("stroke", "blue")
+            .attr("stroke-width", "1px");
 
         svg.append("g")
             .attr("class", "x axis")
@@ -68,14 +68,26 @@ function drawline(enddate) {
 
 }
 
-drawline("2022-12-21");
+drawline("2020-01-21","2022-12-21");
 
 export function update_chart() {
-    const date = document.getElementById("date").value;
+    const startdate = document.getElementById("date_from").value;
+    const enddate = document.getElementById("date_to").value;
     div_chart.selectAll("*").remove();
-    drawline(date);
+    drawline(startdate,enddate);
 }
 
 // 按钮update：更新地图
 const update_button_chart = document.getElementById("update");
 update_button_chart.onclick = update_chart;
+
+/*为了实现日期调整功能，我计划仿照data_container，在index.html文件中<div id="chart_container">这一行之前增加如下内容：
+<div id="date_container_for_chart">
+Available time:<br>
+<label for="date_from">Date From:</label>
+<input type="date" id="date_from" name="date_from" value="2020-01-21"><br>
+<label for="date_to">Date To:</label>
+<input type="date" id="date_to" name="date_to" value="2022-12-21">
+</div>
+这样试图获取统计图的起止时间，经过我测试是能正常更新的 
+*/
